@@ -21,7 +21,7 @@ print("time to request full data:", time() - start)
 start = time()
 response2 = requests.get("http://127.0.0.1:5000/compressed?col=0")
 print("time to request compressed data:", time() - start)
-# time to request compressed data: 2.3614771366119385
+# time to request compressed data: 0.05910205841064453
 ```
 
 ```python
@@ -38,4 +38,19 @@ print(len(response2.content))
 ## Ratio between Compressed and Full
 print(len(response2.content) / len(response.content))
 # 0.1585103445330904
+```
+
+```python
+start = time()
+response = requests.get("http://127.0.0.1:5000/full?col=1")
+print("time to request full data:", time() - start)
+# time to request full data: 0.457775354385376
+
+start = time()
+response2 = requests.get("http://127.0.0.1:5000/compressed?col=1")
+print("time to request compressed data:", time() - start)
+# time to request compressed data: 0.11768484115600586
+
+print(len(response2.content) / len(response.content))
+# 0.441538985771116
 ```

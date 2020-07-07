@@ -9,6 +9,9 @@ app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
 df = pd.read_csv("1500000 Sales Records.csv")
+comp = lzhw.CompressedDF(df)
+for i in range(len(df.columns)):
+	comp.compressed[i].compressed = [bin(i)[2:] for i in comp.compressed[i].compressed]
 
 
 @app.route('/full', methods=['GET'])
@@ -23,11 +26,9 @@ def get_full():
 @app.route('/compressed', methods=['GET'])
 def get_compressed():
 	col = int(request.args["col"])
-	comp = lzhw.CompressedDF(df, selected_cols = [col])
-	comp.compressed[0].compressed = [bin(i)[2:] for i in comp.compressed[0].compressed]
 	try:
 		start = time()
-		return jsonify({"sequences": comp.compressed[0].sequences, "compressed": comp.compressed[0].compressed})
+		return jsonify({"sequences": comp.compressed[col].sequences, "compressed": comp.compressed[col].compressed})
 	finally:
 		print(time() - start)
 
